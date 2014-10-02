@@ -12,5 +12,6 @@
 #include <stdio.h>
 
 void mergeSortArray(float* array, int size);
+void mergeArrays(float * first, float * second, const int firstSize, const int secondSize, float* destination);
 
 #endif /* defined(__Sorting_Algorithm_Fun__merge_sort__) */

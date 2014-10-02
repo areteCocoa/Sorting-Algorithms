@@ -9,17 +9,19 @@
 #include "merge_sort.h"
 #include "helper.h"
 
-void appendArrayWithArray(float origin[], float addition[], int entryIndex, int additionSize) {
-    for (int count = 0; count < additionSize; count ++) {
-        origin[count + entryIndex] = addition[count];
+void appendArrayWithArray(float origin[], float addition[], int entryIndex, int additionSize, int additionEntryIndex) {
+    float nextValue;
+    for (int count = additionEntryIndex; count < additionSize; count ++) {
+        nextValue = addition[count];
+        origin[count - additionEntryIndex + entryIndex] = nextValue;
     }
 }
 
 void mergeArrays(float * first, float * second, const int firstSize, const int secondSize, float* destination) {
-    printf("\nMerging arrays: ");
+    printf("\nMerging arrays: %p %p ===== ", first, second);
     printArray(first, firstSize);
-    printf("\t\t\t and ");
-    printArray(second, secondSize);
+    printf(" and ");
+    printArrayLine(second, secondSize);
     
     int resultCount = 0;
     
@@ -29,7 +31,7 @@ void mergeArrays(float * first, float * second, const int firstSize, const int s
     
     while (resultCount < firstSize + secondSize) {
         if (firstCount < firstSize && secondCount < secondSize) {
-            printf("Comparing values %f and %f.\n", firstFloat, secondFloat);
+            printf("Comparing values %.1f and %.1f: ", firstFloat, secondFloat);
             
             ComparisonResult comparison = compareFloats(firstFloat, secondFloat);
             if (comparison == Ascending || comparison == Equal) {
@@ -43,19 +45,20 @@ void mergeArrays(float * first, float * second, const int firstSize, const int s
                 secondCount++;
                 secondFloat = second[secondCount];
             }
+            printf("%.1f inserted.\n", destination[resultCount]);
         } else if (firstCount >= firstSize) {
-            appendArrayWithArray(destination, second, resultCount, secondSize);
+            appendArrayWithArray(destination, second, resultCount, secondSize, secondCount);
             secondCount = secondSize;
             
         } else if (secondCount >= secondSize) {
-            appendArrayWithArray(destination, first, resultCount, firstSize);
+            appendArrayWithArray(destination, first, resultCount, firstSize, firstCount);
             firstCount = firstSize;
         }
         resultCount = firstCount + secondCount;
-        printArray(destination, firstSize + secondSize);
+        printArrayLine(destination, firstSize + secondSize);
     }
     
-    printf("Arrays merged to "); printArray(destination, firstSize + secondSize);
+    printf("Arrays merged to %p ===== ", destination); printArrayLine(destination, firstSize + secondSize);
 }
 
 void mergeSortArray(float array[], int size) {
@@ -63,7 +66,7 @@ void mergeSortArray(float array[], int size) {
         return;
     }
     
-    printf("Merge sorting array of size %d.\n", size);
+    printf("\nMerge sorting array of size %d.\n", size);
     
     int firstSize = size/2;
     int secondSize = size - firstSize;
@@ -79,18 +82,17 @@ void mergeSortArray(float array[], int size) {
     }
     
     printf("Array split into two:\n");
-    printArray(first, firstSize);
-    printArray(second, secondSize);
+    printArrayLine(first, firstSize);
+    printArrayLine(second, secondSize);
     
     mergeSortArray(first, firstSize);
     mergeSortArray(second, secondSize);
     
-    float sortedArray[size];
-    mergeArrays(first, second, firstSize, secondSize, sortedArray);
+    mergeArrays(first, second, firstSize, secondSize, array);
     
     printf("Merge sorted array: ");
     
-    array = sortedArray;
+    //array = &sortedArray;
     
-    printArray(array, size);
+    printArrayLine(array, size);
 }

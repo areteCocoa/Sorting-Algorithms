@@ -19,16 +19,19 @@ void swapFloatingElements(float *first, float *second) {
 
 /* main */
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    float testArray[] = {0.5, 1.0, 0.1, 0.7, 0.4, 0.3, 0.6};
-    int size = sizeof(testArray)/sizeof(float);
     
-    printArray(testArray, size);
+    int size = 100;
+    float array[size];
     
-    mergeSortArray(testArray, size);
+    fillFloatArrayWithRandom(array, size);
     
+    printArrayLine(array, size);
+    
+    mergeSortArray(array, size);
+    
+    printf("\n");
     printf("THE FINAL ARRAY VALUE: ");
-    printArray(testArray, size);
+    printArrayLine(array, size);
     
     return 0;
 }

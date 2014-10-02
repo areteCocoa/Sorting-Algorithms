@@ -17,8 +17,13 @@ typedef enum {
     Equal
 } ComparisonResult;
 
-void fillFloatArrayWithRandom(float array[]);
+void fillFloatArrayWithRandom(float array[], int size);
+
 void printArray(float array[], int size);
+
+// Convenience for print array
+void printArrayLine(float array[], int size);
+
 ComparisonResult compareFloats(float first, float second);
 
 #endif /* defined(__Sorting_Algorithm_Fun__helper__) */
